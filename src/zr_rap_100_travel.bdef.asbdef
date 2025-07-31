@@ -1,0 +1,79 @@
+managed implementation in class ZBP_R_RAP_100_TRAVEL unique;
+strict ( 2 );
+with draft;
+extensible;
+define behavior for ZR_RAP_100_TRAVEL alias Travel
+persistent table ZRAP_100_TRAVEL
+extensible
+draft table ZRAP_100_TRVEL_D
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master( global )
+early numbering
+{
+  field ( mandatory )
+   CustomerId,
+   BeginDate,
+   EndDate;
+
+  field ( readonly )
+   TravelId,
+   CreatedBy,
+   CreateAt,
+   LocalLastChangedBy,
+   LocalLastChangedAt,
+   LastChangedAt,
+   OverallStatus;
+
+//  field ( readonly : update )
+//   TravelId;
+
+  determination setStatusOpen on modify { create; }
+
+//  validation validateStatusOpen on save { create; field OverallStatus; }
+  validation validateCustomer on save { create; field CustomerId; }
+  validation validateDates on save { create; field BeginDate,EndDate; }
+
+  action deductDiscount parameter /dmo/a_travel_discount result [1] $self;
+
+  action (features : instance) acceptTravel result [1] $self;
+  action (features : instance) rejectTravel result [1] $self;
+
+  factory action copyTravel [1];
+
+
+  create;
+  update (features : instance);
+  delete (features : instance);
+
+
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action (features : instance) Edit;
+  draft action Resume;
+  //in order to have draft instance being checked by validations and determination
+  draft determine action Prepare{ validation validateCustomer; validation validateDates; }
+
+  mapping for ZRAP_100_TRAVEL corresponding extensible
+  {
+    TravelId = travel_id;
+    AgencyId = agency_id;
+    CustomerId = customer_id;
+    BeginDate = begin_date;
+    EndDate = end_date;
+    BookingFee = booking_fee;
+    TotalPrice = total_price;
+    CurrencyCode = currency_code;
+    Description = description;
+    OverallStatus = overall_status;
+    Attachment = attachment;
+    MimeType = mime_type;
+    FileName = file_name;
+    CreatedBy = created_by;
+    CreateAt = create_at;
+    LocalLastChangedBy = local_last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+    LastChangedAt = last_changed_at;
+  }
+}

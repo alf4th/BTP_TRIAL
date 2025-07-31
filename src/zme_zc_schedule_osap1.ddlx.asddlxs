@@ -1,0 +1,47 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: { typeName: 'Schedule',
+                typeNamePlural: 'Schedules',
+                title: { type: #STANDARD, value: 'CourseBegin' } },
+
+  presentationVariant: [{ sortOrder: [{ by: 'CourseBegin', direction:  #ASC }] }]  }
+
+annotate view ZC_SCHEDULE_OSAP1 with
+{
+  @UI.facet: [ { id:              'Schedule',
+                 purpose:         #STANDARD,
+                 type:            #IDENTIFICATION_REFERENCE,
+                 label:           'Schedule Details',
+                 position:        10 } ]
+
+  @UI.hidden: true
+  ScheduleUuid;
+
+  @UI: { lineItem:       [ { position: 10, label: 'Begin' } ],
+         identification: [ { position: 10, label: 'Begin' } ] }
+  CourseBegin;
+
+  @UI.hidden: true
+  CourseUuid;
+
+  @UI: { lineItem:       [ { position: 20, label: 'Location' } ],
+         identification: [ { position: 20, label: 'Location' } ] }
+  Location;
+
+  @UI: { lineItem:       [ { position: 30, label: 'Instructor' } ],
+         identification: [ { position: 30, label: 'Instructor' } ] }
+
+  Trainer;
+
+  @UI: { lineItem:       [ { position: 40, label: 'Online' } ],
+         identification: [ { position: 40, label: 'Online' } ] }
+  IsOnline;
+
+  @UI:{ lineItem:       [ { hidden: true } ],
+        identification: [ { position: 50, label: 'Last Change' }] }
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+}

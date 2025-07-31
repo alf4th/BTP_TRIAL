@@ -1,0 +1,7 @@
+@EndUserText.label: 'SD Course OSAP1'
+define service ZSD_ZUI_COURSE_OSAP1 {
+  expose ZC_COURSE_OSAP1   as Course;
+  expose ZC_SCHEDULE_OSAP1 as Schedule;
+  expose I_Country         as Country;
+  expose I_Currency        as Currency;
+}
